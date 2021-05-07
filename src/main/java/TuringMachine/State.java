@@ -6,4 +6,5 @@ package TuringMachine;
 // qx:  any other states
 
 public class State {
+    private
 }
