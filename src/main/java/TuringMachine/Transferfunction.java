@@ -14,8 +14,9 @@ public class Transferfunction {
     public Transferfunction(State currentState, State nextState, String readSymbol,
                             String writeSymbol, Move move) {
         this.currentState   = currentState;
-        this.nextState      = nextState;
         this.readSymbol     = readSymbol;
+
+        this.nextState      = nextState;
         this.writeSymbol    = writeSymbol;
         this.move           = move;
     }

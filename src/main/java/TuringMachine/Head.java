@@ -5,7 +5,15 @@ package TuringMachine;
 // can move left/right after reading and writing
 
 public class Head extends TuringMachine{
+    private Tape tape;
     private int position;
+
+    public static String SYMBOL = "0";
+    public static String SEPARATOR = "1";
+    public static String EMPTY = "$";
+
+
+
 
     public Head(int position) {
         setPosition(position);
