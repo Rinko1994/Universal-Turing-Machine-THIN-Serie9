@@ -1,10 +1,12 @@
 package TuringMachine;
 
-// State Q of a TM
-// q1:  starting state
-// q2:  accepting state
-// qx:  any other states
+
+import java.util.List;
 
 public class State {
-    private
+    private String name;
+    private boolean acceptedState;
+    private List<Transferfunction> transferfunctionList;
+
+
 }
