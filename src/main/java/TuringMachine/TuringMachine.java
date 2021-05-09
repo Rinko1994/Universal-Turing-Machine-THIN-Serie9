@@ -1,5 +1,7 @@
 package TuringMachine;
 
+import java.io.IOException;
+
 public abstract class TuringMachine {
     private State startingState;
     private Head head;
@@ -10,6 +12,47 @@ public abstract class TuringMachine {
         this.startingState = startingState;
         this.head = new Head(number1, number2);
         this.stepMode = stepMode;
+    }
+
+    public void run() {
+        State currentState = this.startingState;
+        Transferfunction currentTransition = currentState.getNextTransferFunction(this.head.getCurrentSymbol());
+        int counter = 1;
+        while (!currentState.acceptedState()) {
+            this.head.writeToTape(currentTransition.getWriteSymbol(), currentTransition.getMove());
+            String newReadSymbol = this.head.getCurrentSymbol();
+            currentState = currentTransition.getCurrentState();
+            currentTransition = currentState.getNextTransferFunction(newReadSymbol);
+            if (stepMode) {
+                this.printTM(currentState, counter);
+                try {
+                    System.in.read();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            counter++;
+        }
+
+        this.printFinalTM(currentState, counter);
+    }
+
+    private void printTM(State currentState, int stepCount) {
+
+        System.out.println("---:)---");
+        System.out.println("Current state: " + currentState.getName() + " accepted: " + currentState.acceptedState());
+        System.out.println("Aktuelle Lese- und Schriebekopf Position: " + this.head.getHeadPosition());
+        System.out.println("Anzahl durchläufe: " + stepCount);
+        this.head.printTapeStatus();
+        System.out.println("---:)---");
+
+    }
+
+    private void printFinalTM(State currentState, int stepCount) {
+        if (!this.stepMode) {
+            this.printTM(currentState, stepCount);
+        }
+        System.out.println("Ergebnis: " + this.head.getResult());
     }
 
 }
