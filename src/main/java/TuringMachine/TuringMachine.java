@@ -55,7 +55,7 @@ public abstract class TuringMachine {
         if (!this.stepMode) {
             this.printTM(currentState, stepCount);
         }
-        System.out.println("Ergebnis: " + this.head.getResult());
+        System.out.println("Result: " + this.head.getResult());
     }
 
 }
