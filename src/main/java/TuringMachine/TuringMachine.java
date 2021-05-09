@@ -14,6 +14,9 @@ public abstract class TuringMachine {
         this.stepMode = stepMode;
     }
 
+    protected TuringMachine() {
+    }
+
     public void run() {
         State currentState = this.startingState;
         Transferfunction currentTransition = currentState.getNextTransferFunction(this.head.getCurrentSymbol());
@@ -41,8 +44,8 @@ public abstract class TuringMachine {
 
         System.out.println("---:)---");
         System.out.println("Current state: " + currentState.getName() + " accepted: " + currentState.acceptedState());
-        System.out.println("Aktuelle Lese- und Schriebekopf Position: " + this.head.getHeadPosition());
-        System.out.println("Anzahl durchläufe: " + stepCount);
+        System.out.println("Current head position: " + this.head.getHeadPosition());
+        System.out.println("Steps: " + stepCount);
         this.head.printTapeStatus();
         System.out.println("---:)---");
 
