@@ -1,6 +1,6 @@
 package TuringMachine;
 
-public class Transferfunction {
+public class TransferFunction {
     private State currentState;
     private State nextState;
     private String readSymbol;
@@ -11,11 +11,10 @@ public class Transferfunction {
         LEFT, RIGHT
     }
 
-    public Transferfunction(State currentState, State nextState, String readSymbol,
+    public TransferFunction(State currentState, State nextState, String readSymbol,
                             String writeSymbol, Move move) {
         this.currentState   = currentState;
         this.readSymbol     = readSymbol;
-
         this.nextState      = nextState;
         this.writeSymbol    = writeSymbol;
         this.move           = move;

@@ -5,34 +5,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class State {
-    private String name;
-    private boolean acceptedState;
-    private List<Transferfunction> transferfunctionList;
+    private int stateNumber;
+    private List<TransferFunction> transferFunctionList;
+    private Head head;
 
-    public State(String name, boolean acceptedState) {
-        this.name = name;
-        this.acceptedState = acceptedState;
-        this.transferfunctionList = new ArrayList<Transferfunction>();
+    public State(int stateNumber, List<TransferFunction> nextMoveList) {
+        this.stateNumber = stateNumber;
+        this.transferFunctionList = new ArrayList<TransferFunction>();
     }
 
-    public boolean acceptedState() {
-        return acceptedState;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public Transferfunction getNextTransferFunction(String readSymbol) {
-        for (Transferfunction element : transferfunctionList) {
-            if (element.getReadSymbol().equals(readSymbol)) {
-                return element;
+    public TransferFunction getNextTransferFunction(char readSymbol) {
+        for (TransferFunction transferFunction : transferFunctionList) {
+            if (transferFunction.getReadSymbol().equals(readSymbol)) {
+                return transferFunction;
             }
         }
         throw new IllegalArgumentException("Illegal language");
     }
 
-    public void addTransferfunction(Transferfunction tf) {
-        transferfunctionList.add(tf);
+    public void addTransferFunction(TransferFunction tf) {
+        transferFunctionList.add(tf);
     }
 }
