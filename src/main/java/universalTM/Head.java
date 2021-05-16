@@ -1,78 +1,111 @@
 package universalTM;
 
+import java.util.Arrays;
+
 public class Head {
     private int position = 0;
     private char[] tape;
     private char currentChar;
     private char delimiter = '1';
+    private Boolean stepByStepMode;
 
-    public void processTape(String tape){
+    public void processTape(String tape, Boolean stepByStepMode){
+        this.stepByStepMode = stepByStepMode;
         this.tape = tape.toCharArray();
         currentChar = this.tape[position];
 
-        initializeStates();
+        initializeTransferFunctions();
 
-        //while(!TuringMachine.currentState.accepted){
-            //lis de shit und rechne
-        //}
+        processInput();
     }
 
     private void write(char character){
         tape[position] = character;
     }
 
-    private void initializeStates(){
-        int counter = position;
+    private void initializeTransferFunctions(){
         while(currentChar != delimiter){
             String[] transferFunctionCode = new String[5];
+            int iterator = 0;
 
             while(currentChar != delimiter){
                 String currentCode = "";
 
-                for(int i = 0; i < transferFunctionCode.length; i++) {
-                    while (currentChar != delimiter) {
-                        currentCode += currentChar;
-                        write('$');
-                        readNextChar(Direction.RIGHT);
+                while(currentChar != delimiter){
+                    if(iterator >= 5){
+                        throw new IllegalArgumentException("iterator > 4");
                     }
-                    transferFunctionCode[i] = currentCode;
-                    currentCode = "";
+                    currentCode += currentChar;
+                    write('$');
                     readNextChar(Direction.RIGHT);
-                    if(currentChar == delimiter){
-                        break;
-                    }
                 }
-                System.out.println("got out");
+                write('$');
 
-                counter = position - counter;
-                System.out.println(counter);
-                TransferFunction transferFunction = new TransferFunction(StateCollection.decode(transferFunctionCode[0]),
-                        SymbolCollection.decode(transferFunctionCode[1]).value,
-                        StateCollection.decode(transferFunctionCode[2]),
-                        SymbolCollection.decode(transferFunctionCode[3]).value,
-                        Direction.decode(transferFunctionCode[4]));
-
-                TuringMachine.stateList.get(StateCollection.decode(transferFunctionCode[0])).add(transferFunction);
+                transferFunctionCode[iterator] = currentCode;
+                iterator++;
                 readNextChar(Direction.RIGHT);
             }
-        }
+            write('$');
 
+            TransferFunction transferFunction = new TransferFunction(State.decode(transferFunctionCode[0]),
+                    SymbolCollection.decode(transferFunctionCode[1]).value,
+                    State.decode(transferFunctionCode[2]),
+                    SymbolCollection.decode(transferFunctionCode[3]).value,
+                    Direction.decode(transferFunctionCode[4]));
+
+            TuringMachine.transferFunctionList.add(transferFunction);
+
+            readNextChar(Direction.RIGHT);
+        }
+        write('$');
     }
 
+    private void processInput(){
+        int counter = 0;
+        readNextChar(Direction.RIGHT);
+        int tapeOriginalLength = tape.length;
+        tape = Arrays.copyOf(tape, tape.length + 50);
 
-    private void readInput(){
-        for(TransferFunction transferFunction : TuringMachine.stateList.get(TuringMachine.currentState)){
-            if(transferFunction.currentSymbol == currentChar){
-                tape[position] = transferFunction.newSymbol;
-                position += transferFunction.nextDirection.nextPosition;
-            }
+        for(int i = 0; i < tape.length - tapeOriginalLength; i++){
+            tape[tapeOriginalLength + i] = '$';
         }
 
+        while(!TuringMachine.currentState.accepted){
+            for(TransferFunction tf : TuringMachine.transferFunctionList){
+                if(tf.currentState == TuringMachine.currentState &&
+                        tf.currentSymbol == currentChar){
+                    counter++;
+                    if (stepByStepMode) {
+                        System.out.print("Step: " + counter + "| State = " + tf.currentState.toString() +
+                                "| Tape: ");
+                        for (int i = position - 15; i < position + 15; i++) {
+                            if (i == position) {
+                                System.out.print("[");
+                            }
+                            System.out.print(tape[i]);
+                            if (i == position) {
+                                System.out.print("]");
+                            }
+                        }
+                        System.out.print("\n");
+                        System.out.println("_____________________________________________________________________________");
+                    }
+                    write(tf.newSymbol);
+                    readNextChar(tf.nextDirection);
+                    TuringMachine.currentState = tf.nextState;
+                }
+            }
+        }
+        int result = 0;
+        while(currentChar == '0'){
+            result++;
+            readNextChar(Direction.RIGHT);
+        }
+        System.out.println("Result: " + result);
     }
 
     private void readNextChar(Direction direction){
         position += direction.nextPosition;
         currentChar = tape[position];
     }
-
 }

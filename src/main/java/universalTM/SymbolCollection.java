@@ -20,5 +20,4 @@ public enum SymbolCollection {
         }
         return null;
     }
-
 }

@@ -1,20 +1,18 @@
 package universalTM;
 
 public class TransferFunction {
-    public StateCollection currentStateCollection;
+    public State currentState;
     public char currentSymbol;
-    public StateCollection nextStateCollection;
+    public State nextState;
     public char newSymbol;
     public Direction nextDirection;
 
-
-    public TransferFunction(StateCollection currentStateCollection, char currentSymbol, StateCollection nextStateCollection,
+    public TransferFunction(State currentState, char currentSymbol, State nextState,
                             char newSymbol, Direction nextDirection){
-        this.currentStateCollection = currentStateCollection;
+        this.currentState = currentState;
         this.currentSymbol = currentSymbol;
-        this.nextStateCollection = nextStateCollection;
+        this.nextState = nextState;
         this.newSymbol = newSymbol;
         this.nextDirection = nextDirection;
-
     }
 }
