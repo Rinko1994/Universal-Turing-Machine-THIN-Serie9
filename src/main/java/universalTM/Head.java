@@ -7,10 +7,10 @@ public class Head {
     private char[] tape;
     private char currentChar;
     private char delimiter = '1';
-    private Boolean stepByStepMode;
+    private Boolean stepMode;
 
-    public void processTape(String tape, Boolean stepByStepMode){
-        this.stepByStepMode = stepByStepMode;
+    public void processTape(String tape, Boolean stepMode){
+        this.stepMode = stepMode;
         this.tape = tape.toCharArray();
         currentChar = this.tape[position];
 
@@ -64,7 +64,7 @@ public class Head {
         int counter = 0;
         readNextChar(Direction.RIGHT);
         int tapeOriginalLength = tape.length;
-        tape = Arrays.copyOf(tape, tape.length + 50);
+        tape = Arrays.copyOf(tape, tape.length * 2);
 
         for(int i = 0; i < tape.length - tapeOriginalLength; i++){
             tape[tapeOriginalLength + i] = '$';
@@ -75,10 +75,10 @@ public class Head {
                 if(tf.currentState == TuringMachine.currentState &&
                         tf.currentSymbol == currentChar){
                     counter++;
-                    if (stepByStepMode) {
+                    if (stepMode) {
                         System.out.print("Step: " + counter + "| State = " + tf.currentState.toString() +
                                 "| Tape: ");
-                        for (int i = position - 15; i < position + 15; i++) {
+                        for (int i = position - 15; i < position + 16; i++) {
                             if (i == position) {
                                 System.out.print("[");
                             }

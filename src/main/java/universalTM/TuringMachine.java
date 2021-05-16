@@ -8,8 +8,8 @@ public class TuringMachine {
     public static List<TransferFunction> transferFunctionList = new ArrayList<>();
     private static Head head = new Head();
 
-    public static void run(String tape, Boolean stepByStepMode){
+    public static void run(String tape, Boolean stepMode){
         currentState = State.q0;
-        head.processTape(tape, stepByStepMode);
+        head.processTape(tape, stepMode);
     }
 }

@@ -1,7 +1,6 @@
 package universalTM;
 
 public enum Direction {
-
     RIGHT(1, "00"), LEFT(-1, "0");
 
     public int nextPosition;
